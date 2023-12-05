@@ -50,13 +50,15 @@ provider "azurerm" {
   subscription_id = "381e41a3-851a-4f47-9c43-4084c9be9bdc"
   tenant_id       = "28f38b70-580e-4091-921f-4b06b4d6f5fc"
 
+}
+
   resource "azurerm_resource_group" "rg" {
   name     = "niq-rg"
   location = var.location-rg
   tags = {
     "Application" = "DemoAppNiq"
   }
-}
+  }
 
 
 
