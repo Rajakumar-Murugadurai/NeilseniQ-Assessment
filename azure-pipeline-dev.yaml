@@ -9,7 +9,7 @@ trigger:
 
 variables:
  - name: 'serviceconnection'
-   value: 'fitnessgeek-sc'
+   value: 'svc'
 
  - name: 'environment'
    value: 'dev'
@@ -18,7 +18,7 @@ variables:
    value: 'terraform-backend'
 
  - name: 'backend_storageaccount'
-   value: 'terraformbackend2023'
+   value: 'terraformbackendniq2023'
 
  - name: 'backend_container'
    value: 'terraform'
