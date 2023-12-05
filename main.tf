@@ -20,7 +20,7 @@ provider "azurerm" {
 
 
 resource "azurerm_resource_group" "rg" {
-  name     = "niq-rg"
+  name     = "niq"
   location = var.location-rg
   tags = {
     "Application" = "NiqDemoApp"
