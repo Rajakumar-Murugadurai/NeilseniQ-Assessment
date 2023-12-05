@@ -1,4 +1,4 @@
-#  Configure the Azure provider
+# Configure the Azure provider
 terraform {
   required_providers {
     azurerm = {
@@ -12,7 +12,6 @@ terraform {
 
 }
 
-
 provider "azurerm" {
   features {}
 }
@@ -23,6 +22,6 @@ resource "azurerm_resource_group" "rg" {
   name     = "niq-rg"
   location = var.location-rg
   tags = {
-    "Application" = "DemoAppNiq"
+    "Application" = "NiqDemoApp"
   }
 }
