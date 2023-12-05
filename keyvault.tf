@@ -3,7 +3,7 @@ data "azurerm_client_config" "current" {}
 
 
 resource "azurerm_key_vault" "fg-keyvault" {
-  name                        = "fgkeyvault2024"
+  name                        = "fgkeyvaultniq2024"
   location                    = azurerm_resource_group.rg.location
   resource_group_name         = azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
@@ -30,7 +30,7 @@ resource "azurerm_key_vault_access_policy" "kv_access_policy_02" {
   #This policy adds databaseadmin group with below permissions
   key_vault_id       = azurerm_key_vault.fg-keyvault.id
   tenant_id          = data.azurerm_client_config.current.tenant_id
-  object_id          = "da96d180-3c89-4f4d-b1c3-2c67dec3218c"
+  object_id          = "8f2fd9e7-7e06-4d21-af1c-17378c9e2f02"
   key_permissions    = ["Get", "List"]
   secret_permissions = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
 
@@ -42,7 +42,7 @@ resource "azurerm_key_vault_access_policy" "kv_access_policy_03" {
   #This policy adds databaseadmin group with below permissions
   key_vault_id       = azurerm_key_vault.fg-keyvault.id
   tenant_id          = data.azurerm_client_config.current.tenant_id
-  object_id          = "ef581861-a1a9-4d40-9fcb-cd6f6b97bf4b"
+  object_id          = "8f2fd9e7-7e06-4d21-af1c-17378c9e2f02"
   key_permissions    = ["Get", "List"]
   secret_permissions = ["Get", "Backup", "Delete", "List", "Purge", "Recover", "Restore", "Set"]
 
