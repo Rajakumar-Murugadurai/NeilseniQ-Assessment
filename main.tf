@@ -9,17 +9,14 @@ terraform {
 
   required_version = ">= 1.1.0"
   backend "azurerm" {}
-  
-  features = {
-    # Disabling automatic registration of Resource Providers
-    skip_provider_registration = true
-  }
 
 }
 
 
 provider "azurerm" {
-  features {}
+  features {
+    skip_provider_registration = true
+  }
 }
 
 
