@@ -8,7 +8,7 @@ resource "random_password" "randompassword" {
 #Create Key Vault Secret
 resource "azurerm_key_vault_secret" "sqladminpassword" {
   # checkov:skip=CKV_AZURE_41:Expiration not needed 
-  name         = "sqladmin"
+  name         = "sqladminniq"
   value        = random_password.randompassword.result
   key_vault_id = azurerm_key_vault.fg-keyvault.id
   content_type = "text/plain"
