@@ -11,7 +11,7 @@ trigger: none
 
 variables:
  - name: 'serviceconnection'
-   value: 'niq-sc'
+   value: 'svc'
 
  - name: 'environment'
    value: 'dev'
@@ -72,26 +72,50 @@ stages :
     - job: validate
       continueOnError: false
       steps:
-      - task: TerraformInstaller@0
+      - task: TerraformInstaller@1
         displayName: 'install'
         inputs:
           terraformVersion: 'latest'
-      - task: TerraformTaskV2@2
+
+      # - task: TerraformInstaller@0
+      #  displayName: 'install'
+      #  inputs:
+      #    terraformVersion: 'latest'
+
+      - task: TerraformTaskV4@4
         displayName: 'init'
         inputs:
           provider: 'azurerm'
           command: 'init'
-          backendServiceArm: $(serviceconnection)
-          backendAzureRmResourceGroupName: '$(backend_rg)'
-          backendAzureRmStorageAccountName: $(backend_storageaccount)
-          backendAzureRmContainerName: $(backend_container)
-          backendAzureRmKey: $(backendkey_tfstate)
-          workingDirectory: '$(working_directory)'
-      - task: TerraformTaskV2@2
+          backendServiceArm: 'svc'
+          backendAzureRmResourceGroupName: 'niq'
+          backendAzureRmStorageAccountName: 'terraformbackendniq2023'
+          backendAzureRmContainerName: 'terraform'
+          backendAzureRmKey: 'terraform.tfstate'
+
+      # - task: TerraformTaskV2@2
+      #  displayName: 'init'
+      #  inputs:
+      #    provider: 'azurerm'
+      #    command: 'init'
+      #    backendServiceArm: $(serviceconnection)
+      #    backendAzureRmResourceGroupName: '$(backend_rg)'
+      #    backendAzureRmStorageAccountName: $(backend_storageaccount)
+      #    backendAzureRmContainerName: $(backend_container)
+      #    backendAzureRmKey: $(backendkey_tfstate)
+      #    workingDirectory: '$(working_directory)'
+
+      - task: TerraformTaskV4@4
         displayName: 'validate'
         inputs:
           provider: 'azurerm'
-          command: 'validate' 
+          command: 'validate'
+
+      # - task: TerraformTaskV2@2
+      #  displayName: 'validate'
+      #  inputs:
+      #    provider: 'azurerm'
+      #    command: 'validate' 
 
   - stage: Plan_Apply_dev
     dependsOn: [validate]
@@ -104,27 +128,53 @@ stages :
       - job: plan
         displayName: 'Terraform_plan_dev'
         continueOnError: false
-        steps:
-        - task: TerraformInstaller@0
+        steps:        
+        - task: TerraformInstaller@1
           displayName: 'install'
           inputs:
-           terraformVersion: 'latest'
-        - task: TerraformTaskV2@2
-          displayName: init
+            terraformVersion: 'latest'
+
+        # - task: TerraformInstaller@0
+        #  displayName: 'install'
+        #  inputs:
+        #   terraformVersion: 'latest'
+
+        - task: TerraformTaskV4@4
+          displayName: 'init'
           inputs:
             provider: 'azurerm'
             command: 'init'
-            backendServiceArm: $(serviceconnection)
-            backendAzureRmResourceGroupName: '$(backend_rg)'
-            backendAzureRmStorageAccountName: $(backend_storageaccount)
-            backendAzureRmContainerName: $(backend_container)
-            backendAzureRmKey: $(backendkey_tfstate)
-            workingDirectory: '$(working_directory)'
-        - task: TerraformTaskV2@2
+            backendServiceArm: 'svc'
+            backendAzureRmResourceGroupName: 'niq'
+            backendAzureRmStorageAccountName: 'terraformbackendniq2023'
+            backendAzureRmContainerName: 'terraform'
+            backendAzureRmKey: 'terraform.tfstate'
+
+        # - task: TerraformTaskV2@2
+        #  displayName: init
+        #  inputs:
+        #    provider: 'azurerm'
+        #    command: 'init'
+        #    backendServiceArm: $(serviceconnection)
+        #    backendAzureRmResourceGroupName: '$(backend_rg)'
+        #    backendAzureRmStorageAccountName: $(backend_storageaccount)
+        #    backendAzureRmContainerName: $(backend_container)
+        #    backendAzureRmKey: $(backendkey_tfstate)
+        #    workingDirectory: '$(working_directory)'
+
+        - task: TerraformTaskV4@4
           displayName: plan
           inputs:
             provider: 'azurerm'
             command: 'plan'
             commandOptions: '-var-file="config.tfvars" -out main.tfplan'
-            environmentServiceNameAzureRM: $(serviceconnection)
-            workingDirectory: '$(working_directory)'
+            environmentServiceNameAzureRM: 'svc'
+
+        # - task: TerraformTaskV2@2
+        #  displayName: plan
+        #  inputs:
+        #    provider: 'azurerm'
+        #    command: 'plan'
+        #    commandOptions: '-var-file="config.tfvars" -out main.tfplan'
+        #    environmentServiceNameAzureRM: $(serviceconnection)
+        #    workingDirectory: '$(working_directory)'
