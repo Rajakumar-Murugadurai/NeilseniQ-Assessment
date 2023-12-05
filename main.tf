@@ -19,7 +19,7 @@ provider "azurerm" {
 
 
 resource "azurerm_resource_group" "rg" {
-  name     = "Fitnessgeek-rg"
+  name     = "niq-rg"
   location = var.location-rg
   tags = {
     "Application" = "DemoApp"
