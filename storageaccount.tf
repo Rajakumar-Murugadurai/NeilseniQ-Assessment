@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "fitnessgeek-storage" {
-  name                     = "fgstorageaccount1989"
+  name                     = "fgstorageaccountniq2023"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
