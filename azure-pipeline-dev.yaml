@@ -293,7 +293,7 @@ stages :
           inputs:
             provider: 'azurerm'
             command: 'apply'
-            commandOptions: '''-input=false -auto-approve -var-file="config.tfvars"'
+            commandOptions: '-input=false -auto-approve -var-file="config.tfvars"'
             environmentServiceNameAzureRM: 'svc'        
 
         #  - task: TerraformTaskV2@2
