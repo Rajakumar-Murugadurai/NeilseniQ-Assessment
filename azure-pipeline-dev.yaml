@@ -73,12 +73,7 @@ stages :
       - task: TerraformInstaller@1
         displayName: 'install'
         inputs:
-          terraformVersion: 'latest'
-
-       # - task: TerraformInstaller@0
-       # displayName: 'install'
-       # inputs:
-       #   terraformVersion: 'latest'
+          terraformVersion: 'latest'       
 
       - task: TerraformTaskV4@4
         displayName: 'init'
@@ -89,32 +84,15 @@ stages :
           backendAzureRmResourceGroupName: 'niq'
           backendAzureRmStorageAccountName: 'terraformbackendniq2023'
           backendAzureRmContainerName: 'terraform'
-          backendAzureRmKey: 'terraform.tfstate'
-      
-        # - task: TerraformTaskV2@2
-        # displayName: 'init'
-        # inputs:
-        #  provider: 'azurerm'
-        #  command: 'init'
-        #  backendServiceArm: $(serviceconnection)
-        #  backendAzureRmResourceGroupName: '$(backend_rg)'
-        #  backendAzureRmStorageAccountName: $(backend_storageaccount)
-        #  backendAzureRmContainerName: $(backend_container)
-        #  backendAzureRmKey: $(backendkey_tfstate)
-        #  workingDirectory: '$(working_directory)'
+          backendAzureRmKey: 'terraform.tfstate'    
+        
       
       - task: TerraformTaskV4@4
         displayName: 'validate'
         inputs:
           provider: 'azurerm'
           command: 'validate'
-      
-        # - task: TerraformTaskV2@2
-        # displayName: 'validate'
-        # inputs:
-        #  provider: 'azurerm'
-        #  command: 'validate' 
-
+              
   - stage: Plan_Apply_dev
     dependsOn: [validate]
     condition: succeeded('validate')
@@ -131,12 +109,7 @@ stages :
           displayName: 'install'
           inputs:
             terraformVersion: 'latest'
-
-          # - task: TerraformInstaller@0
-          # displayName: 'install'
-          # inputs:
-          # terraformVersion: 'latest'
-
+          
         - task: TerraformTaskV4@4
           inputs:
             provider: 'azurerm'
@@ -145,19 +118,7 @@ stages :
             backendAzureRmResourceGroupName: 'niq'
             backendAzureRmStorageAccountName: 'terraformbackendniq2023'
             backendAzureRmContainerName: 'terraform'
-            backendAzureRmKey: 'terraform.tfstate'
-        
-         #- task: TerraformTaskV2@2
-         # displayName: init
-         # inputs:
-         #   provider: 'azurerm'
-         #   command: 'init'
-         #   backendServiceArm: $(serviceconnection)
-         #   backendAzureRmResourceGroupName: '$(backend_rg)'
-         #   backendAzureRmStorageAccountName: $(backend_storageaccount)
-         #   backendAzureRmContainerName: $(backend_container)
-         #   backendAzureRmKey: $(backendkey_tfstate)
-         #   workingDirectory: '$(working_directory)'
+            backendAzureRmKey: 'terraform.tfstate'                
         
         - task: TerraformTaskV4@4
           displayName: 'plan'
@@ -165,17 +126,7 @@ stages :
             provider: 'azurerm'
             command: 'plan'
             commandOptions: '-var-file="config.tfvars" -out main.tfplan'
-            environmentServiceNameAzureRM: 'svc'           
-
-        
-          # - task: TerraformTaskV2@2
-          # displayName: plan
-          # inputs:
-          #  provider: 'azurerm'
-          #  command: 'plan'
-          #  commandOptions: '-var-file="config.tfvars" -out main.tfplan'
-          #  environmentServiceNameAzureRM: $(serviceconnection)
-          #  workingDirectory: '$(working_directory)'
+            environmentServiceNameAzureRM: 'svc'                             
 
 #Checkov to scan the execution plan for vulnerabilities and exposed outputs
         - task: Bash@3
@@ -202,6 +153,7 @@ stages :
             failTaskOnFailedTests: false
             publishRunAttachments: true
           displayName: Publish Test Result
+
       - job: waitForValidation
         displayName: 'Wait for execution plan validation'
         pool: server
@@ -234,12 +186,7 @@ stages :
         - task: TerraformInstaller@1
           displayName: 'install'
           inputs:
-            terraformVersion: 'latest'       
-
-          # - task: TerraformInstaller@0
-          # displayName: 'install'
-          # inputs:
-          #  terraformVersion: 'latest'
+            terraformVersion: 'latest'                            
         
         - task: TerraformTaskV4@4
           displayName: 'init'
@@ -250,19 +197,7 @@ stages :
             backendAzureRmResourceGroupName: 'niq'
             backendAzureRmStorageAccountName: 'terraformbackendniq2023'
             backendAzureRmContainerName: 'terraform'
-            backendAzureRmKey: 'terraform.tstate'
-
-        # - task: TerraformTaskV2@2
-        #  displayName: 'init'
-        #  inputs:
-        #    provider: 'azurerm'
-        #    command: 'init'
-        #    backendServiceArm: $(serviceconnection)
-        #    backendAzureRmResourceGroupName: '$(backend_rg)'
-        #    backendAzureRmStorageAccountName: $(backend_storageaccount)
-        #    backendAzureRmContainerName: $(backend_container)
-        #    backendAzureRmKey: $(backendkey_tfstate)
-        #    workingDirectory: '$(working_directory)'
+            backendAzureRmKey: 'terraform.tstate'        
 
         - task: Bash@3
           inputs:
@@ -276,17 +211,7 @@ stages :
             provider: 'azurerm'
             command: 'plan'
             commandOptions: '-input=false -var-file="config.tfvars"'
-            environmentServiceNameAzureRM: 'svc'            
-
-
-        # - task: TerraformTaskV2@2
-        #  displayName: 'plan'
-        #  inputs:
-        #    provider: 'azurerm'
-        #    command: 'plan'
-        #    commandOptions: '-input=false -var-file="config.tfvars"'
-        #   environmentServiceNameAzureRM: '$(serviceconnection)'
-        #    workingDirectory: '$(working_directory)'
+            environmentServiceNameAzureRM: 'svc'                    
 
         - task: TerraformTaskV4@4
           displayName: 'apply'
@@ -294,26 +219,4 @@ stages :
             provider: 'azurerm'
             command: 'apply'
             commandOptions: '-input=false -auto-approve -var-file="config.tfvars"'
-            environmentServiceNameAzureRM: 'svc'        
-
-        #  - task: TerraformTaskV2@2
-        #  displayName: 'apply'
-        #  inputs:
-        #    provider: 'azurerm'
-        #    command: 'apply'
-        #    commandOptions: '-input=false -auto-approve -var-file="config.tfvars"'
-        #    environmentServiceNameAzureRM: '$(serviceconnection)'
-        #    workingDirectory: '$(working_directory)'
-
-            
-  
-            
-
-
-
-           
-
-    
-              
-    
-    
+            environmentServiceNameAzureRM: 'svc'       
