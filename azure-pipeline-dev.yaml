@@ -45,13 +45,13 @@ stages :
           inputs:
             targetType: 'inline'
             script: 'pip install checkov'
-            displayName: Install checkov
+            displayName: 'Install checkov'
         - task: Bash@3
           inputs:
             targetType: 'inline'
             workingDirectory: $(working_directory)
             script: 'checkov -d . -o junitxml > scan-result.xml --soft-fail'
-            displayName: Checkov source code scan
+            displayName: 'Checkov source code scan'
             continueOnError: true
         - task: PublishTestResults@2
           inputs:
@@ -62,7 +62,7 @@ stages :
             testRunTitle: Terraform source code scan
             failTaskOnFailedTests: false
             publishRunAttachments: true
-            displayName: Publish Test Result
+            displayName: 'Publish Test Result'
 
   - stage: validate
     displayName : 'Terraform Validate'
@@ -74,10 +74,12 @@ stages :
         displayName: 'install'
         inputs:
           terraformVersion: 'latest'
+
        # - task: TerraformInstaller@0
        # displayName: 'install'
        # inputs:
        #   terraformVersion: 'latest'
+
       - task: TerraformTaskV4@4
         displayName: 'init'
         inputs:
@@ -88,7 +90,7 @@ stages :
           backendAzureRmStorageAccountName: 'terraformbackendniq2023'
           backendAzureRmContainerName: 'terraform'
           backendAzureRmKey: 'terraform.tfstate'
-
+      
         # - task: TerraformTaskV2@2
         # displayName: 'init'
         # inputs:
@@ -100,13 +102,13 @@ stages :
         #  backendAzureRmContainerName: $(backend_container)
         #  backendAzureRmKey: $(backendkey_tfstate)
         #  workingDirectory: '$(working_directory)'
-
+      
       - task: TerraformTaskV4@4
         displayName: 'validate'
         inputs:
           provider: 'azurerm'
           command: 'validate'
-
+      
         # - task: TerraformTaskV2@2
         # displayName: 'validate'
         # inputs:
@@ -136,7 +138,6 @@ stages :
           # terraformVersion: 'latest'
 
         - task: TerraformTaskV4@4
-          displayName: 'init'
           inputs:
             provider: 'azurerm'
             command: 'init'
@@ -145,7 +146,7 @@ stages :
             backendAzureRmStorageAccountName: 'terraformbackendniq2023'
             backendAzureRmContainerName: 'terraform'
             backendAzureRmKey: 'terraform.tfstate'
-
+        
          #- task: TerraformTaskV2@2
          # displayName: init
          # inputs:
@@ -157,16 +158,16 @@ stages :
          #   backendAzureRmContainerName: $(backend_container)
          #   backendAzureRmKey: $(backendkey_tfstate)
          #   workingDirectory: '$(working_directory)'
-
+        
         - task: TerraformTaskV4@4
           displayName: 'plan'
           inputs:
             provider: 'azurerm'
             command: 'plan'
-            workingDirectory: '$(System.DefaultWorkingDirectory)'
             commandOptions: '-var-file="config.tfvars" -out main.tfplan'
-            environmentServiceNameAzureRM: 'svc'
+            environmentServiceNameAzureRM: 'svc'           
 
+        
           # - task: TerraformTaskV2@2
           # displayName: plan
           # inputs:
@@ -233,13 +234,13 @@ stages :
         - task: TerraformInstaller@1
           displayName: 'install'
           inputs:
-            terraformVersion: 'latest'
+            terraformVersion: 'latest'       
 
           # - task: TerraformInstaller@0
           # displayName: 'install'
           # inputs:
           #  terraformVersion: 'latest'
-
+        
         - task: TerraformTaskV4@4
           displayName: 'init'
           inputs:
@@ -249,7 +250,7 @@ stages :
             backendAzureRmResourceGroupName: 'niq'
             backendAzureRmStorageAccountName: 'terraformbackendniq2023'
             backendAzureRmContainerName: 'terraform'
-            backendAzureRmKey: 'terraform.tfstate'
+            backendAzureRmKey: 'terraform.tstate'
 
         # - task: TerraformTaskV2@2
         #  displayName: 'init'
@@ -268,14 +269,15 @@ stages :
             targetType: 'inline'
             script: 'printenv'
             displayName: printenv
-            
+          
         - task: TerraformTaskV4@4
           displayName: 'plan'
           inputs:
             provider: 'azurerm'
             command: 'plan'
             commandOptions: '-input=false -var-file="config.tfvars"'
-            environmentServiceNameAzureRM: 'svc'
+            environmentServiceNameAzureRM: 'svc'            
+
 
         # - task: TerraformTaskV2@2
         #  displayName: 'plan'
@@ -286,14 +288,13 @@ stages :
         #   environmentServiceNameAzureRM: '$(serviceconnection)'
         #    workingDirectory: '$(working_directory)'
 
-        
         - task: TerraformTaskV4@4
           displayName: 'apply'
           inputs:
             provider: 'azurerm'
             command: 'apply'
-            commandOptions: '-input=false -auto-approve -var-file="config.tfvars"'
-            environmentServiceNameAzureRM: 'svc'
+            commandOptions: '''-input=false -auto-approve -var-file="config.tfvars"'
+            environmentServiceNameAzureRM: 'svc'        
 
         #  - task: TerraformTaskV2@2
         #  displayName: 'apply'
